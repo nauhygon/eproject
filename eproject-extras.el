@@ -205,8 +205,12 @@ assume the project of the current buffer."
         (root (eproject--handle-root-prefix-arg prefix)))
     (message "Opening files...")
     (save-window-excursion
-      (loop for file in (eproject-list-project-files root)
-            do (progn (find-file file) (incf total))))
+      (let ((files (eproject-list-project-files root)))
+        (loop for file in files
+              do (progn
+                   (find-file file)
+                   (incf total)
+                   (message "Opened %d / %d files" total (length files))))))
     (message "Opened %d files" total)))
 
 ;; project management
